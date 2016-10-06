@@ -1,28 +1,40 @@
 # Lucian
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/lucian`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Lucian is a test framework for Docker environments which running up containers using docker-compose.yml, and testing them using Rspec. 
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'lucian'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+You can simply install by:
 
     $ gem install lucian
 
 ## Usage
 
-TODO: Write usage instructions here
+lucian is run from the command line. Please go to the directory that contain your docker-compose.yml .
+
+### Help
+
+For more information and usage of lucian
+
+```bash
+$ lucian --help
+```
+
+### Initialize
+
+Simply initialize lucian configuration files.
+
+```bash
+$ lucian --init
+```
+
+### Start
+
+Just luanch Lucian where you have your docker-compose.yml file and lucian initialized
+
+```bash
+$ lucian
+```
 
 ## Development
 
@@ -32,7 +44,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/lucian.
+Bug reports and pull requests are welcome on GitHub at https://github.com/gastzars/lucian.
 
 
 ## License
