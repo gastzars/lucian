@@ -1,7 +1,5 @@
 # Lucian
 
-=======
-
 [![Build Status](https://travis-ci.org/gastzars/lucian.svg?branch=master)](https://travis-ci.org/gastzars/lucian)
 
 Lucian is a test framework for Docker environments which running up containers using docker-compose.yml, and testing them using Rspec. 
