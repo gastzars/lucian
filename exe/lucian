@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+# exe/hulaki
+
+# $: is just a shortcut for $LOAD_PATH. __FILE__ is the relative 
+#   path to the script. This adds the current script directory 
+#   to the load path
+
+this_file = Pathname.new(__FILE__).realpath
+$:.unshift File.expand_path("../../lib", this_file)
+require 'lucian'
