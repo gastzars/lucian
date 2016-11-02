@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+
+  # Web
+
+  web-service:
+    build: ./projects/web/
+    command: "bundle exec rails s -p 3500 -b '0.0.0.0' --pid /server.pid"
+    volumes:
+      - ./projects/web/:/app
+    ports:
+      - "3500:3500"
+    depends_on:
+      - crud-service
+
+  # Crud
+
+  crud-service:
+    build: ./projects/crud/
+    command: "bundle exec rails s -p 4000 -b '0.0.0.0' --pid /server.pid"
+    volumes:
+      - ./projects/crud/:/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongodb
+
+  # Api
+
+  realtime-service:
+    build: ./projects/realtime/
+    command: "bundle exec rails s -p 3501 -b '0.0.0.0' --pid /server.pid"
+    volumes:
+      - ./projects/realtime/:/app
+    ports:
+      - "3501:3501"
+    depends_on:
+      - crud-service
+
+  # Job
+
+  scheduler-worker:
+    build: ./projects/scheduler/
+    command: "bundle exec sidekiq -q default"
+    volumes:
+      - ./projects/scheduler/:/app
+    depends_on:
+      - crud-service
+      - redis
+
+  # Database
+
+  mongodb:
+    image: mongo
+
+  redis:
+    image: redis

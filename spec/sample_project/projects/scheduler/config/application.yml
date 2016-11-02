@@ -1,0 +1,11 @@
+defaults: &defaults
+  crud-streams: crud-service:4000/streams
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

@@ -1,0 +1,15 @@
+default: &default
+  host: redis
+  port: 6379
+  db: 3
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  host: redis-web
+  port: 6379
+  db: 3

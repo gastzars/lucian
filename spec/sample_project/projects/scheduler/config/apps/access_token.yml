@@ -1,0 +1,12 @@
+default: &default
+  access_token: 1158585884193345|Ul-_d9xzG2_U_kWg175osuEFJB8
+  page_id: 369458879802653
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
