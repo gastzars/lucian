@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
-# exe/hulaki
+# exe/lucian
 
 # $: is just a shortcut for $LOAD_PATH. __FILE__ is the relative 
 #   path to the script. This adds the current script directory 
@@ -9,3 +9,18 @@
 this_file = Pathname.new(__FILE__).realpath
 $:.unshift File.expand_path("../../lib", this_file)
 require 'lucian'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: lucian [options]"
+
+  opts.on("-i", "--init", "Initialize Lucian environment") do |v|
+    options[:init] = v
+    Lucian::Initiator.init
+  end
+end.parse!
+
+if options == {}
+  puts "run main logic here"
+end
