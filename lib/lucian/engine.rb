@@ -1,8 +1,8 @@
 module Lucian
 
   # Core module for Lucian framework is HERE !
-  class Core
-    attr_reader :compose_file, :compose_data, :compose_directory
+  class Engine
+    attr_reader :compose_file, :compose_data, :compose_directory, :lucian_files
 
     ##
     # Initialize and fetch for compose file.
@@ -15,7 +15,19 @@ module Lucian
       @compose_data = YAML.load_file(@compose_file)
       @lucian_directory = @compose_directory+'/'+DIRECTORY
       @lucian_helper = @lucian_directory+'/'+HELPER
+      @lucian_files = fetch_lucian_files(@lucian_directory)
+      $LOAD_PATH.unshift(@lucian_directory) unless $LOAD_PATH.include?(@lucian_directory)
+      require 'lucian_helper' if File.exist?(@lucian_helper)
     end
+
+    ##
+    # Run
+
+    def run
+      
+    end
+
+    private
 
     ##
     # Fetching compose file from curent directory and parents
@@ -29,6 +41,13 @@ module Lucian
         compose_path = files
       end
       return compose_path
+    end
+
+    ##
+    # Fetching *_lucian.rb files
+
+    def fetch_lucian_files(path = File.expand_path('./lucian'))
+      Dir.glob("#{path}/**/*_lucian.rb")
     end
 
   end
