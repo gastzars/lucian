@@ -10,6 +10,7 @@ module Lucian
       lucian_path = File.expand_path(path+'/lucian')
       create_directory(lucian_path)
       create_helper_file(lucian_path)
+      create_gemfile(lucian_path)
       BoardCaster.print('Lucian init DONE', "green")
     end
 
@@ -21,6 +22,11 @@ module Lucian
     def self.create_helper_file(directory_path)
       FileUtils.cp(File.expand_path(File.expand_path(__FILE__)+'./../template/lucian_helper.rb'), directory_path)
       BoardCaster.print('Create: '+directory_path+'/lucian_helper.rb'+' [DONE]', "yellow")
+    end
+
+    def self.create_gemfile(directory_path)
+      FileUtils.cp(File.expand_path(File.expand_path(__FILE__)+'./../template/Gemfile'), directory_path)
+      BoardCaster.print('Create: '+directory_path+'/Gemfile'+' [DONE]', "yellow")
     end
   end
 end
