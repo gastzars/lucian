@@ -22,5 +22,6 @@ OptionParser.new do |opts|
 end.parse!
 
 if options == {}
-  puts "run main logic here"
+  lucian = Lucian::Engine.new
+  lucian.run
 end

@@ -1,8 +1,10 @@
 module Lucian
 
+  ##
   # Core module for Lucian framework is HERE !
+
   class Engine
-    attr_reader :compose_file, :compose_data, :compose_directory, :lucian_files
+    attr_reader :compose_file, :compose_data, :compose_directory, :lucian_files, :network_name
 
     ##
     # Initialize and fetch for compose file.
@@ -16,7 +18,9 @@ module Lucian
       @lucian_directory = @compose_directory+'/'+DIRECTORY
       @lucian_helper = @lucian_directory+'/'+HELPER
       @lucian_files = fetch_lucian_files(@lucian_directory)
+      @network_name = File.basename(@compose_directory).gsub!(/[^0-9A-Za-z]/, '')
       $LOAD_PATH.unshift(@lucian_directory) unless $LOAD_PATH.include?(@lucian_directory)
+      @docker_compose = Docker::Compose.new
       require 'lucian_helper' if File.exist?(@lucian_helper)
     end
 
@@ -24,7 +28,10 @@ module Lucian
     # Run
 
     def run
-      
+      BoardCaster.print("Start running Lucian ..", "green")
+      @lucian_files.each do |file|
+        load file
+      end
     end
 
     private
