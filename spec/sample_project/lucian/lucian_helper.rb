@@ -1,1 +1,1 @@
-include RSpec::Matchers
+extend RSpec::Matchers

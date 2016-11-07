@@ -1,3 +1,4 @@
 ##
-# Comment this line if you do not want to use an RSpec matcher
-include RSpec::Matchers
+# Comment these line if you do not want to use an RSpec matcher
+require 'rspec/expectations'
+extend RSpec::Matchers

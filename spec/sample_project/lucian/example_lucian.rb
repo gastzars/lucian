@@ -8,7 +8,8 @@ end
 
 describe '#realtime', services: [:realtime_service, :crud_service, :mongodb] do
   it 'create a record to mongodb when recieve a rest api' do
-    
+    a = 20
+    expect(a).to eq(21)    
   end
 
   context '#web', services: [:web_service] do

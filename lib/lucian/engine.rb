@@ -28,10 +28,9 @@ module Lucian
     # Run
 
     def run
-      BoardCaster.print("Start running Lucian ..", "green")
-      @lucian_files.each do |file|
-        load file
-      end
+      BoardCaster.print("Start running Lucian ..", "yellow")
+      RSpec.lucian_engine = self
+      Lucian::Runner.invoke(self)
     end
 
     private
