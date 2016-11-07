@@ -11,8 +11,8 @@ describe Lucian::Engine do
   context '#initialize' do
     it 'can fetch parent docker-compose.yml' do
       Dir.chdir './spec/sample_project/projects'
-      lucian_core = Lucian::Engine.new
-      expect(lucian_core.compose_file).to eq(File.expand_path('./../docker-compose.yml'))
+      lucian_engine = Lucian::Engine.new
+      expect(lucian_engine.compose_file).to eq(File.expand_path('./../docker-compose.yml'))
     end
 
     it 'raise error when docker-compose path is invalid' do
@@ -20,23 +20,30 @@ describe Lucian::Engine do
     end
 
     it 'can load yaml into object when docker-compose path is valid' do
-      lucian_core = Lucian::Engine.new('./spec/sample_project/docker-compose.yml')
-      expect(lucian_core.compose_data).to eq(YAML.load_file('./spec/sample_project/docker-compose.yml'))
+      lucian_engine = Lucian::Engine.new('./spec/sample_project/docker-compose.yml')
+      expect(lucian_engine.compose_data).to eq(YAML.load_file('./spec/sample_project/docker-compose.yml'))
     end
 
     it 'can find docker-compose directory when docker-compose path is valid' do
       Dir.chdir './spec/sample_project/projects'
-      lucian_core = Lucian::Engine.new
-      expect(lucian_core.compose_directory).to eq(File.expand_path(current_dir+'/spec/sample_project'))
+      lucian_engine = Lucian::Engine.new
+      expect(lucian_engine.compose_directory).to eq(File.expand_path(current_dir+'/spec/sample_project'))
     end
 
-    it 'can fetch *_lucian.rb files' do
+    ##
+    # UNUSED FIXME
+    #it 'can fetch *_lucian.rb files' do
+    #  Dir.chdir './spec/sample_project/projects'
+    #  lucian_engine = Lucian::Engine.new
+    #  expect(lucian_engine.lucian_files).to include(File.expand_path(current_dir+'/spec/sample_project/lucian/example_lucian.rb'))
+    #  expect(lucian_engine.lucian_files).to include(File.expand_path(current_dir+'/spec/sample_project/lucian/subdir/subdir_lucian.rb'))
+    #end
+
+    it 'can set Docker::Compose::Session file to the correct path' do
       Dir.chdir './spec/sample_project/projects'
-      lucian_core = Lucian::Engine.new
-      expect(lucian_core.lucian_files).to include(File.expand_path(current_dir+'/spec/sample_project/lucian/example_lucian.rb'))
-      expect(lucian_core.lucian_files).to include(File.expand_path(current_dir+'/spec/sample_project/lucian/subdir/subdir_lucian.rb'))
+      lucian_engine = Lucian::Engine.new
+      expect(lucian_engine.docker_compose.file).to eq(lucian_engine.compose_file)
     end
-
     
   end
 end

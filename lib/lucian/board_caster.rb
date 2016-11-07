@@ -12,6 +12,10 @@ module Lucian
         34
       when "pink"
         35
+      when "cyan"
+        36
+      when "gray"
+        37
       else
         0
       end

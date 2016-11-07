@@ -25,4 +25,5 @@ end.parse!
 if options == {}
   lucian = Lucian::Engine.new
   lucian.run
+  lucian.shutdown
 end

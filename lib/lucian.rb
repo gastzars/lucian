@@ -10,6 +10,7 @@ require_relative 'rspec'
 require_relative 'rspec/core/example_group'
 require_relative 'rspec/core/configuration'
 require_relative 'rspec/core/runner'
+require_relative 'docker/compose/session'
 
 module Lucian
   DIRECTORY = 'lucian'
