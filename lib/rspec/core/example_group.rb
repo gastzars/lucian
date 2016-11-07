@@ -20,8 +20,8 @@ module RSpec::Core
 
         services_names = []
         hash_options = args.last if args.last.is_a? Hash
-        Lucian::BoardCaster.print(">> ExampleGroup : "+args.first.to_s, "cyan")
         if hash_options && hash_options[:services]
+          Lucian::BoardCaster.print(">> ExampleGroup : "+args.first.to_s, "cyan")
           services_names = hash_options[:services].collect(&:to_s)
           RSpec.lucian_engine.run_docker_service(services_names)
 #          puts "OVERRIDDED"
