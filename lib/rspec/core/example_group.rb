@@ -18,14 +18,6 @@ module RSpec::Core
       idempotently_define_singleton_method(name) do |*args, &example_group_block|
         # NOTE EXAMPLE GROUP METHOD IS OVERRIDED HERE
 
-        services_names = []
-        hash_options = args.last if args.last.is_a? Hash
-        if hash_options && hash_options[:services]
-          Lucian::BoardCaster.print(">> ExampleGroup : "+args.first.to_s, "cyan")
-          services_names = hash_options[:services].collect(&:to_s)
-          RSpec.lucian_engine.run_docker_service(services_names)
-#          puts "OVERRIDDED"
-        end
 
         # END OVERRIDED HERE
 
@@ -57,9 +49,7 @@ module RSpec::Core
           thread_data.delete(:in_example_group) if top_level
 
           # OVERRIDED ENSURE
-          if services_names.count > 0
-            RSpec.lucian_engine.stop_docker_service(services_names)
-          end
+          #
         end
       end
     end

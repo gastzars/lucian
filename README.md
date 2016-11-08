@@ -1,4 +1,5 @@
 [![Lucian framework](http://i216.photobucket.com/albums/cc229/gastzar/lucianlogo_1.png)](https://github.com/gastzars/lucian)
+[![Lucian framework terminal](http://i216.photobucket.com/albums/cc229/gastzar/out.gif)](https://github.com/gastzars/lucian)
 
 [![Build Status](https://travis-ci.org/gastzars/lucian.svg?branch=master)](https://travis-ci.org/gastzars/lucian)
 
