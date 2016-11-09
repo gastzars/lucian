@@ -11,8 +11,11 @@ module Lucian
       create_directory(lucian_path)
       create_helper_file(lucian_path)
       create_gemfile(lucian_path)
+      create_dockerfile(lucian_path)
       BoardCaster.print('Lucian init DONE', "green")
     end
+
+    private
 
     def self.create_directory(directory_path)
       FileUtils::mkdir_p directory_path
@@ -27,6 +30,11 @@ module Lucian
     def self.create_gemfile(directory_path)
       FileUtils.cp(File.expand_path(File.expand_path(__FILE__)+'./../template/Gemfile'), directory_path)
       BoardCaster.print('Create: '+directory_path+'/Gemfile'+' [DONE]', "yellow")
+    end
+
+    def self.create_dockerfile(directory_path)
+      FileUtils.cp(File.expand_path(File.expand_path(__FILE__)+'./../template/Dockerfile'), directory_path)
+      BoardCaster.print('Create: '+directory_path+'/Dockerfile'+' [DONE]', "yellow")
     end
   end
 end

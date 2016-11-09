@@ -1,6 +1,7 @@
 require 'lucian/version'
 require 'docker/compose'
 require 'rspec/core'
+require 'docker-api'
 
 require_relative 'lucian/engine'
 require_relative 'lucian/errors'
@@ -41,5 +42,15 @@ module Lucian
   RSpec::Core::ExampleGroup.define_example_group_method :xcontext,  :skip => "Temporarily skipped with xcontext"
   RSpec::Core::ExampleGroup.define_example_group_method :fdescribe, :focus => true
   RSpec::Core::ExampleGroup.define_example_group_method :fcontext,  :focus => true
+
+  ##
+  # Start lucian docker
+  def self.start_lucian_docker
+    engine.start_lucian_docker
+  end
+
+  class << self
+    attr_accessor :engine, :image, :container
+  end
 end
 

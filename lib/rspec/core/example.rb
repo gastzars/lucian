@@ -65,7 +65,9 @@ module RSpec::Core
     end
 
     def run_lucian_test
-      
+      if Lucian.image.nil? || Lucian.container.nil?
+        Lucian.start_lucian_docker
+      end
     end
   end
 end

@@ -29,5 +29,12 @@ describe Lucian::Initiator do
       FileUtils.rm_rf(File.expand_path(current_dir+'/lucian'))
       expect(File.exist?(File.expand_path(current_dir+'/lucian/Gemfile'))).to be_falsy
     end
+
+    it 'can create "lucian/Dockerfile" file' do
+      Lucian::Initiator.init
+      expect(File.exist?(File.expand_path(current_dir+'/lucian/Dockerfile'))).to be_truthy
+      FileUtils.rm_rf(File.expand_path(current_dir+'/lucian'))
+      expect(File.exist?(File.expand_path(current_dir+'/lucian/Dockerfile'))).to be_falsy
+    end
   end
 end
