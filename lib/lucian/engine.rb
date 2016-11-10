@@ -5,12 +5,12 @@ module Lucian
   class Engine
     attr_reader :compose_file, :compose_data, :compose_directory, :network_name #lucian_files
 
-    attr_reader :docker_compose, :network_name
+    attr_reader :docker_compose, :network_name, :examples
 
     ##
     # Initialize and fetch for compose file.
     # if unable to find a docker-compose file then givving an error
-    def initialize(compose_file = nil)
+    def initialize(compose_file = nil, examples = [])
       @compose_file = compose_file || fetch_docker_compose_file
       raise Error.new('Unable to find docker-compose.yml or docker-compose.yaml.') if !@compose_file || !File.file?(@compose_file)
       @compose_directory = File.expand_path(@compose_file+'/..')
@@ -21,6 +21,7 @@ module Lucian
       @network_name = File.basename(@compose_directory).gsub!(/[^0-9A-Za-z]/, '')
       $LOAD_PATH.unshift(@lucian_directory) unless $LOAD_PATH.include?(@lucian_directory)
       @docker_compose = Docker::Compose.new
+      @examples = examples
       config_compose
       require 'lucian_helper' if File.exist?(@lucian_helper)
       Lucian.engine = self

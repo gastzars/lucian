@@ -20,10 +20,14 @@ OptionParser.new do |opts|
     options[:init] = v
     Lucian::Initiator.init
   end
+
+  opts.on("-eSTRING", "--example=STRING", "Run examples whose full nested names include STRING") do |v|
+    (options[:example] ||= []) << Regexp.compile(Regexp.escape(v))
+  end
 end.parse!
 
-if options == {}
-  lucian = Lucian::Engine.new
+if options[:init].nil?
+  lucian = Lucian::Engine.new(nil, options[:example])
   lucian.run
   lucian.shutdown
 end

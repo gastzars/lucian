@@ -14,6 +14,7 @@ module RSpec::Core
         options.options[:runner].call(options, err, out)
       else
         if lucian_engine
+          options.options[:full_description] = lucian_engine.examples if !lucian_engine.examples.nil? && lucian_engine.examples.count > 0
           new(options, RSpec.configuration, RSpec.world, lucian_engine).run(err, out)
         else
           new(options).run(err, out)
