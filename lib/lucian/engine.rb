@@ -12,9 +12,9 @@ module Lucian
     # if unable to find a docker-compose file then givving an error
     def initialize(compose_file = nil, examples = [])
       @compose_file = compose_file || fetch_docker_compose_file
-      raise Error.new('Unable to find docker-compose.yml or docker-compose.yaml.') if !@compose_file || !File.file?(@compose_file)
+      raise Error.new('Unable to find docker-compose.yml or docker-compose.yaml.') if (!@compose_file || !File.file?(@compose_file)) && ENV["LUCIAN_DOCKER"] == nil
       @compose_directory = File.expand_path(@compose_file+'/..')
-      @compose_data = YAML.load_file(@compose_file)
+      @compose_data = YAML.load_file(@compose_file) if ENV["LUCIAN_DOCKER"] == nil
       @lucian_directory = @compose_directory+'/'+DIRECTORY
       @lucian_helper = @lucian_directory+'/'+HELPER
       #@lucian_files = fetch_lucian_files(@lucian_directory)
@@ -38,9 +38,12 @@ module Lucian
     ##
     # Shutdown
     def shutdown
-      @docker_compose.down
-      stop_lucian_container
-      remove_lucian_container
+      # NOTE Check if running in docker or not 
+      if ENV["LUCIAN_DOCKER"] == nil
+        @docker_compose.down
+        stop_lucian_container
+        remove_lucian_container
+      end
       # remove_lucian_image # NOTE Bot sure we need to remove this or not
     end
 
@@ -70,6 +73,12 @@ module Lucian
       run_lucian_image(image)
     end
 
+    ##
+    # Run lucian test
+    def run_lucian_test(example)
+      BoardCaster.print("Running lucian test ..", "yellow")
+      Lucian.container.exec(['lucian', '--example', example])
+    end
 
     private
 
@@ -145,5 +154,6 @@ module Lucian
       container.kill!
       return true
     end
+
   end
 end

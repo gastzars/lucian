@@ -13,6 +13,7 @@ require_relative 'rspec/core/example'
 require_relative 'rspec/core/configuration'
 require_relative 'rspec/core/configuration_options'
 require_relative 'rspec/core/runner'
+require_relative 'lucian/custom_formatter'
 require_relative 'docker/compose/session'
 
 module Lucian
@@ -48,6 +49,12 @@ module Lucian
   # Start lucian docker
   def self.start_lucian_docker
     engine.start_lucian_docker
+  end
+
+  ##
+  # Run lucian test
+  def self.run_lucian_test(example)
+    engine.run_lucian_test(example)
   end
 
   class << self

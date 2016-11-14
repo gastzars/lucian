@@ -1,3 +1,3 @@
 module Lucian
-  VERSION = "0.1.1dev"
+  VERSION = "0.2.1"
 end

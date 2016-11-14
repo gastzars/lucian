@@ -19,7 +19,12 @@ module RSpec::Core
               # Check if there are services or not 
               if self.metadata[:services] != nil && self.metadata[:services].is_a?(Array) && ENV["LUCIAN_DOCKER"] == nil
                 run_docker_services
-                run_lucian_test
+                result = run_lucian_test
+                if result[2].to_i != 0
+puts result.to_s
+
+                  raise result[1]
+                end
               else
                 run_before_example
                 @example_group_instance.instance_exec(self, &@example_block)
@@ -68,6 +73,7 @@ module RSpec::Core
       if Lucian.image.nil? || Lucian.container.nil?
         Lucian.start_lucian_docker
       end
+      Lucian.run_lucian_test(self.metadata[:full_description].to_s)
     end
   end
 end

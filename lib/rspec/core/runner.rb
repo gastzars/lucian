@@ -15,6 +15,7 @@ module RSpec::Core
       else
         if lucian_engine
           options.options[:full_description] = lucian_engine.examples if !lucian_engine.examples.nil? && lucian_engine.examples.count > 0
+          options.options[:formatters] = [["Lucian::CustomFormatter"]] unless ENV['LUCIAN_DOCKER'].nil?
           new(options, RSpec.configuration, RSpec.world, lucian_engine).run(err, out)
         else
           new(options).run(err, out)

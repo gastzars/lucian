@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_runtime_dependency(%q<rspec-core>, ['~> 3.0'])
   spec.add_runtime_dependency(%q<rspec-expectations>, ['~> 3.0'])
   spec.add_runtime_dependency(%q<docker-compose>, '~>1.0')
   spec.add_runtime_dependency(%q<docker-api>, '~>1.30')
