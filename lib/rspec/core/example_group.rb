@@ -54,5 +54,46 @@ module RSpec::Core
       end
     end
 
+    def self.run(reporter=RSpec::Core::NullReporter)
+      services = self.metadata[:services] || []
+      parent_services = []
+      unless self.metadata[:parent_example_group].nil?
+        current_parent = self.metadata[:parent_example_group]
+        loop do
+          parent_services << current_parent[:services]
+          break if current_parent[:parent_example_group].nil?
+          current_parent = current_parent[:parent_example_group]
+        end
+      end
+      services = (services+parent_services).flatten.compact.uniq
+      if services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
+        Lucian::BoardCaster.print(">> ExampleGroup : "+self.metadata[:full_description].to_s, "cyan")
+        RSpec.lucian_engine.run_docker_service(services)
+      end
+      return if RSpec.world.wants_to_quit
+      reporter.example_group_started(self)
+
+      should_run_context_hooks = descendant_filtered_examples.any?
+      begin
+        run_before_context_hooks(new('before(:context) hook')) if should_run_context_hooks
+        result_for_this_group = run_examples(reporter)
+        results_for_descendants = ordering_strategy.order(children).map { |child| child.run(reporter) }.all?
+        result_for_this_group && results_for_descendants
+      rescue Pending::SkipDeclaredInExample => ex
+        for_filtered_examples(reporter) { |example| example.skip_with_exception(reporter, ex) }
+        true
+      rescue RSpec::Support::AllExceptionsExceptOnesWeMustNotRescue => ex
+        for_filtered_examples(reporter) { |example| example.fail_with_exception(reporter, ex) }
+        RSpec.world.wants_to_quit = true if reporter.fail_fast_limit_met?
+        false
+      ensure
+        run_after_context_hooks(new('after(:context) hook')) if should_run_context_hooks
+        if services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
+          RSpec.lucian_engine.stop_docker_service(services)
+        end
+        reporter.example_group_finished(self)
+      end
+    end
+
   end
 end

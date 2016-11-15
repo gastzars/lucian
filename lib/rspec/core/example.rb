@@ -18,7 +18,6 @@ module RSpec::Core
               # NOTE Code is overrided HERE
               # Check if there are services or not 
               if self.metadata[:services] != nil && self.metadata[:services].is_a?(Array) && ENV["LUCIAN_DOCKER"] == nil
-                run_docker_services
                 result = run_lucian_test
                 if result[2].to_i != 0
                   pending_cut = result[0].join("\n").gsub("\n", "--_n").match(/(PENDING.*)FAILING/)[0] rescue nil
@@ -64,7 +63,6 @@ module RSpec::Core
               set_exception(e)
             ensure
               run_after_example
-              stop_docker_services if self.metadata[:services] != nil && self.metadata[:services].is_a?(Array) && ENV["LUCIAN_DOCKER"] == nil
             end
           end
         end
@@ -78,15 +76,6 @@ module RSpec::Core
     ensure
       execution_result.ensure_timing_set(clock)
       RSpec.current_example = nil
-    end
-
-    def run_docker_services
-      Lucian::BoardCaster.print("\n>> ExampleGroup : "+self.metadata[:full_description].to_s, "cyan")
-      RSpec.lucian_engine.run_docker_service(self.metadata[:services])
-    end
-
-    def stop_docker_services
-      RSpec.lucian_engine.stop_docker_service(self.metadata[:services])
     end
 
     def run_lucian_test

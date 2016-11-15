@@ -1,6 +1,7 @@
 require 'lucian/version'
 require 'docker/compose'
 require 'rspec/core'
+require 'rspec/support'
 require 'docker-api'
 
 require_relative 'lucian/engine'

@@ -18,12 +18,12 @@ module Lucian
       @lucian_directory = @compose_directory+'/'+DIRECTORY
       @lucian_helper = @lucian_directory+'/'+HELPER
       #@lucian_files = fetch_lucian_files(@lucian_directory)
-      @network_name = File.basename(@compose_directory).gsub!(/[^0-9A-Za-z]/, '')+"_default"
+      @network_name = File.basename(@compose_directory).gsub!(/[^0-9A-Za-z]/, '')+"_default" if ENV["LUCIAN_DOCKER"] == nil
       $LOAD_PATH.unshift(@lucian_directory) unless $LOAD_PATH.include?(@lucian_directory)
       @docker_compose = Docker::Compose.new
       @examples = examples
       config_compose
-      require 'lucian_helper' if File.exist?(@lucian_helper)
+      require 'lucian_helper' if File.exist?(@lucian_helper) && ENV["LUCIAN_DOCKER"] != nil
       Lucian.engine = self
     end
 

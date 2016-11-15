@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency(%q<rspec-core>, ['~> 3.0'])
   spec.add_runtime_dependency(%q<rspec-expectations>, ['~> 3.0'])
+  spec.add_runtime_dependency(%q<rspec-support>, ['~> 3.0'])
   spec.add_runtime_dependency(%q<docker-compose>, '~>1.0')
   spec.add_runtime_dependency(%q<docker-api>, '~>1.30')
 
