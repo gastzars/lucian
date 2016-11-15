@@ -18,7 +18,7 @@ module Lucian
       @lucian_directory = @compose_directory+'/'+DIRECTORY
       @lucian_helper = @lucian_directory+'/'+HELPER
       #@lucian_files = fetch_lucian_files(@lucian_directory)
-      @network_name = File.basename(@compose_directory).gsub!(/[^0-9A-Za-z]/, '')
+      @network_name = File.basename(@compose_directory).gsub!(/[^0-9A-Za-z]/, '')+"_default"
       $LOAD_PATH.unshift(@lucian_directory) unless $LOAD_PATH.include?(@lucian_directory)
       @docker_compose = Docker::Compose.new
       @examples = examples
@@ -40,11 +40,11 @@ module Lucian
     def shutdown
       # NOTE Check if running in docker or not 
       if ENV["LUCIAN_DOCKER"] == nil
-        @docker_compose.down
         stop_lucian_container
         remove_lucian_container
+        @docker_compose.down
       end
-      # remove_lucian_image # NOTE Bot sure we need to remove this or not
+      # remove_lucian_image # NOTE Not sure we need to remove this or not
     end
 
     ##
@@ -70,7 +70,8 @@ module Lucian
     # Start lucian docker connect to compose
     def start_lucian_docker
       image = build_lucian_image
-      run_lucian_image(image)
+      container = run_lucian_image(image)
+      connect_container_to_network(container)
     end
 
     ##
@@ -126,6 +127,22 @@ module Lucian
       container = image.run
       Lucian.container = container
       return container
+    end
+
+    ##
+    # Connect running container to compose network
+    def connect_container_to_network(container=Lucian.container)
+      raise "Container can not be nil" if container.nil?
+      raise "Couldn't fetch docker-compose network's name" if @network_name.nil?
+      network = Docker::Network.all.find do |nw|
+        nw.info["Name"] == @network_name
+      end
+      raise "Couldn't find compose's network" if network.nil?
+      begin
+        network.connect(container.id)
+        BoardCaster.print("Join lucian container to #{@network_name} network ..", "yellow")
+      rescue Docker::Error::ServerError
+      end
     end
 
     ##

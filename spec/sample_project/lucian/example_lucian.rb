@@ -29,4 +29,6 @@ describe '#scheduler', services: ["scheduler-worker", "redis", "crud-service", "
 
     end
   end
+
+  it "pending"
 end

@@ -28,6 +28,9 @@ end.parse!
 
 if options[:init].nil?
   lucian = Lucian::Engine.new(nil, options[:example])
-  lucian.run
-  lucian.shutdown
+  begin
+    lucian.run
+  ensure
+    lucian.shutdown
+  end
 end

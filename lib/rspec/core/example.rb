@@ -21,9 +21,29 @@ module RSpec::Core
                 run_docker_services
                 result = run_lucian_test
                 if result[2].to_i != 0
-puts result.to_s
-
-                  raise result[1]
+                  pending_cut = result[0].join("\n").gsub("\n", "--_n").match(/(PENDING.*)FAILING/)[0] rescue nil
+                  failing_cut = result[0].join("\n").gsub("\n", "--_n").match(/(FAILING.*)Finished/)[0] rescue nil
+                  unless pending_cut.nil? # Pending present?
+                    # TODO Add pending logic here
+                  end
+                  unless failing_cut.nil? # Failing present?
+                    failing_cases = failing_cut.scan(/\|=:.*:=\|/)
+                    failing_cases.each do |_case|
+                      data_cases = _case.split(":=|").collect{|message|
+                        message.gsub("|=:","").split(":|-|:").collect{|_em| 
+                          _em.gsub("--_n", "\n")
+                        }
+                      }
+                      data_cases.each do |to_report|
+                        #description = to_report[0]
+                        lines = to_report[1]
+                        traces = to_report[2]
+                        error = StandardError.new(traces)
+                        error.set_backtrace([lines])
+                        raise error
+                      end
+                    end
+                  end
                 end
               else
                 run_before_example
