@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Lucian
 
   ##
@@ -23,7 +25,7 @@ module Lucian
       @docker_compose = Docker::Compose.new
       @examples = examples
       config_compose
-      require 'lucian_helper' if File.exist?(@lucian_helper) && ENV["LUCIAN_DOCKER"] != nil
+      require 'lucian_helper' if File.exist?(@lucian_helper)
       Lucian.engine = self
     end
 
@@ -114,7 +116,9 @@ module Lucian
     # Build lucian docker image
     def build_lucian_image
       BoardCaster.print("Building lucian image ..", "yellow")
+      FileUtils.cp(File.expand_path(File.expand_path(@compose_directory)+'/Gemfile'), @lucian_directory)
       image = Docker::Image.build_from_dir(@lucian_directory)
+      FileUtils.rm_rf(File.expand_path(File.expand_path(@lucian_directory)+'/Gemfile'))
       Lucian.image = image
       return image
     end

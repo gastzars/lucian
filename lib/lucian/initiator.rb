@@ -10,7 +10,7 @@ module Lucian
       lucian_path = File.expand_path(path+'/lucian')
       create_directory(lucian_path)
       create_helper_file(lucian_path)
-      create_gemfile(lucian_path)
+      create_gemfile(path)
       create_dockerfile(lucian_path)
       BoardCaster.print('Lucian init DONE', "green")
     end

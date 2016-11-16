@@ -11,6 +11,7 @@ $:.unshift File.expand_path("../../lib", this_file)
 require 'lucian'
 require 'rspec/core'
 require 'optparse'
+require 'bundler/setup'
 
 options = {}
 OptionParser.new do |opts|

@@ -8,6 +8,7 @@ describe Lucian::Engine do
     Dir.chdir current_dir
   }
 
+=begin
   context '#initialize' do
     it 'can fetch parent docker-compose.yml' do
       Dir.chdir './spec/sample_project/projects'
@@ -46,4 +47,5 @@ describe Lucian::Engine do
     end
     
   end
+=end
 end

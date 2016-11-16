@@ -11,4 +11,4 @@ class FeedJob < ApplicationJob
   end
 end
 
-Sidekiq::Cron::Job.create(name: 'Feed page every 2 min', cron: '*/2 * * * *', class: 'FeedJob')
+Sidekiq::Cron::Job.create(name: 'Feed page every 1 min', cron: '* * * * *', class: 'FeedJob')
