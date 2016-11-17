@@ -17,6 +17,9 @@ require_relative 'rspec/core/runner'
 require_relative 'lucian/custom_formatter'
 require_relative 'docker/compose/session'
 
+Excon.defaults[:write_timeout] = (ENV["DOCKER_TIMEOUT"] || 1200)
+Excon.defaults[:read_timeout] = (ENV["DOCKER_TIMEOUT"] || 1200)
+
 module Lucian
   DIRECTORY = 'lucian'
   HELPER = 'lucian_helper.rb'

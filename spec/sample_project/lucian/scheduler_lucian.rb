@@ -1,4 +1,3 @@
-=begin
 describe '#scheduler', services: ["scheduler-worker", "redis", "crud-service", "mongodb"] do
 
   Mongoid::Config.clients[:default] = {:database => "crud_development", :hosts => ["mongodb:27017"]}
@@ -27,4 +26,3 @@ describe '#scheduler', services: ["scheduler-worker", "redis", "crud-service", "
   end
 
 end
-=end
