@@ -1,3 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'lucian'
+# Specify your gem's dependencies in lucian.gemspec
+gemspec
