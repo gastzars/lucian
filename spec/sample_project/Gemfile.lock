@@ -24,7 +24,7 @@ GEM
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (2.0.2)
-    lucian (0.2.9)
+    lucian (0.3.0)
       docker-api (~> 1.30)
       docker-compose (~> 1.0)
       rspec-core (~> 3.0)

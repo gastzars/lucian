@@ -1,5 +1,5 @@
 defaults: &defaults
-  crud-streams: crud-service:4000/streams
+  crud-streams: crud-service:4001/streams
 
 development:
   <<: *defaults

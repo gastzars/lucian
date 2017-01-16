@@ -18,11 +18,11 @@ services:
 
   crud-service:
     build: ./projects/crud/
-    command: "bundle exec rails s -p 4000 -b '0.0.0.0' --pid /server.pid"
+    command: "bundle exec rails s -p 4001 -b '0.0.0.0' --pid /server.pid"
     volumes:
       - ./projects/crud/:/app
     ports:
-      - "4000:4000"
+      - "4001:4001"
     depends_on:
       - mongodb
 

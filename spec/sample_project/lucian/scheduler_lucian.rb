@@ -1,5 +1,11 @@
 describe '#scheduler', services: ["scheduler-worker", "redis", "crud-service", "mongodb"] do
 
+  before(:each) do
+    # Sleep to make sure container is running up.
+    sleep 5
+  end
+
+
   Mongoid::Config.clients[:default] = {:database => "crud_development", :hosts => ["mongodb:27017"]}
   ENV["MONGOID_ENV"] = "default"
 
