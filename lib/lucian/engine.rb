@@ -152,28 +152,31 @@ module Lucian
     ##
     # Remove docker image
     def remove_lucian_image(image=Lucian.image)
-      raise "Image can not be nil" if image.nil?
-      BoardCaster.print("Removing lucian image ..", "yellow")
-      image.remove
-      return true
+      unless image.nil?
+        BoardCaster.print("Removing lucian image ..", "yellow")
+        image.remove
+        return true
+      end
     end
 
     ##
     # Remove docker container
     def remove_lucian_container(container=Lucian.container)
-      raise "Container can not be nil" if container.nil?
-      BoardCaster.print("Removing lucian contanier ..", "yellow")
-      container.remove
-      return true
+      unless container.nil?
+        BoardCaster.print("Removing lucian contanier ..", "yellow")
+        container.remove
+        return true
+      end
     end
 
     ##
     # Stop docker container
     def stop_lucian_container(container=Lucian.container)
-      raise "Container can not be nil" if container.nil?
-      BoardCaster.print("Stopping lucian contanier ..", "yellow")
-      container.kill!
-      return true
+      unless container.nil?
+        BoardCaster.print("Stopping lucian contanier ..", "yellow")
+        container.kill!
+        return true
+      end
     end
 
   end
