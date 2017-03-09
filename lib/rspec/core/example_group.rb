@@ -55,7 +55,7 @@ module RSpec::Core
     end
 
     def self.run(reporter=RSpec::Core::NullReporter)
-      services = self.metadata[:services] || []
+      self_services = self.metadata[:services] || []
       parent_services = []
       unless self.metadata[:parent_example_group].nil?
         current_parent = self.metadata[:parent_example_group]
@@ -64,8 +64,9 @@ module RSpec::Core
           break if current_parent[:parent_example_group].nil?
           current_parent = current_parent[:parent_example_group]
         end
+        self_services = parent_services.flatten.uniq - self_services
       end
-      services = (services+parent_services).flatten.compact.uniq
+      services = (self_services+parent_services).flatten.compact.uniq
       if services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
         Lucian::BoardCaster.print(">> ExampleGroup : "+self.metadata[:full_description].to_s, "cyan")
         RSpec.lucian_engine.run_docker_service(services)
@@ -88,8 +89,8 @@ module RSpec::Core
         false
       ensure
         run_after_context_hooks(new('after(:context) hook')) if should_run_context_hooks
-        if services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
-          RSpec.lucian_engine.stop_docker_service(services)
+        if self_services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
+          RSpec.lucian_engine.stop_docker_service(self_services)
         end
         reporter.example_group_finished(self)
       end

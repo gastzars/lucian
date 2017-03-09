@@ -7,6 +7,7 @@ module Lucian
   class Engine
     attr_reader :compose_file, :compose_data, :compose_directory, :network_name #lucian_files
 
+    attr_reader :running_services
     attr_reader :docker_compose, :network_name, :examples
 
     ##
@@ -26,6 +27,7 @@ module Lucian
       @examples = examples
       config_compose
       require 'lucian_helper' if File.exist?(@lucian_helper)
+      @running_services ||= []
       Lucian.engine = self
     end
 
@@ -51,20 +53,26 @@ module Lucian
 
     ##
     # Run and validate services status
-    def run_docker_service(services_names)
+    def run_docker_service(services_names=[])
       services_names.collect!(&:to_s)
-      services_names.each do |service|
-        @docker_compose.up(service, {:detached => true})
+      services_names = services_names - @running_services
+      if services_names.count > 0
+        @docker_compose.up(*services_names, {:detached => true})
+        @running_services += services_names
+        @running_services.uniq!
+        exited = @docker_compose.ps.where { |c| !c.up? && services_names.include?(c.image) }
+        raise "We have some exited containers: " + exited.join(', ') if exited.count > 0
       end
-      exited = @docker_compose.ps.where { |c| !c.up? && services_names.include?(c.image) }
-      raise "We have some exited containers: " + exited.join(', ') if exited.count > 0
     end
 
     ##
     # Stop docker service
     def stop_docker_service(services_names)
-      services_names.each do |service|
-        @docker_compose.stop(service)
+      if services_names.count > 0
+        puts "\n"
+        @docker_compose.stop(*services_names)
+        @running_services -= services_names
+        @running_services.uniq!
       end
     end
 
@@ -79,7 +87,7 @@ module Lucian
     ##
     # Run lucian test
     def run_lucian_test(example)
-      BoardCaster.print("Running lucian test ..", "yellow")
+      # BoardCaster.print("Running lucian test ..", "yellow")
       Lucian.container.exec(['lucian', '--example', example])
     end
 
