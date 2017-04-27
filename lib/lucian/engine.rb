@@ -60,7 +60,7 @@ module Lucian
         @docker_compose.up(*services_names, {:detached => true})
         @running_services += services_names
         @running_services.uniq!
-        exited = @docker_compose.ps.where { |c| !c.up? && services_names.include?(c.image) }
+        exited = @docker_compose.ps.where { |c| !c.nil? && !c.up? && services_names.include?(c.image) }
         raise "We have some exited containers: " + exited.join(', ') if exited.count > 0
       end
     end
