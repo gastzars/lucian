@@ -64,7 +64,7 @@ module RSpec::Core
           break if current_parent[:parent_example_group].nil?
           current_parent = current_parent[:parent_example_group]
         end
-        self_services = parent_services.flatten.uniq - self_services
+        parent_services = parent_services.flatten.uniq - self_services
       end
       services = (self_services+parent_services).flatten.compact.uniq
       if services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
