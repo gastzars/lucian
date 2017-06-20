@@ -77,6 +77,16 @@ module Lucian
     end
 
     ##
+    # Stop if not in
+    def stop_docker_service_if_not_in(services_names=[])
+      @running_services ||= []
+      to_stop_service = @running_services - services_names
+      if to_stop_service.count > 0
+        stop_docker_service(to_stop_service)
+      end
+    end
+
+    ##
     # Start lucian docker connect to compose
     def start_lucian_docker
       image = build_lucian_image

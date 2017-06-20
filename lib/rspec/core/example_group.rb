@@ -69,6 +69,7 @@ module RSpec::Core
       services = (self_services+parent_services).flatten.compact.uniq
       if services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
         Lucian::BoardCaster.print(">> ExampleGroup : "+self.metadata[:full_description].to_s, "cyan")
+        RSpec.lucian_engine.stop_docker_service_if_not_in(services)
         RSpec.lucian_engine.run_docker_service(services)
       end
       return if RSpec.world.wants_to_quit
@@ -89,9 +90,9 @@ module RSpec::Core
         false
       ensure
         run_after_context_hooks(new('after(:context) hook')) if should_run_context_hooks
-        if self_services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
-          RSpec.lucian_engine.stop_docker_service(self_services)
-        end
+        #if self_services.count > 0 && ENV['LUCIAN_DOCKER'] == nil
+        #  RSpec.lucian_engine.stop_docker_service(self_services)
+        #end
         reporter.example_group_finished(self)
       end
     end
